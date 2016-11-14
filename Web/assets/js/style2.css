@@ -1,0 +1,24 @@
+﻿td.details-control {
+    background: url("details_open.png") no-repeat center center;
+    cursor: pointer;
+    width: 25px;
+}
+
+tr.shown td.details-control {
+    background: url("details_close.png") no-repeat center center;
+    width: 25px;
+}
+
+tfoot input {
+    width: 100%;
+    padding: 3px;
+}
+
+tfoot {
+    border-right: thick;
+}
+
+table tr.row_selected td {
+	background-color: #578EBE;
+    color: white;
+}

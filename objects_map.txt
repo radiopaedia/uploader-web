@@ -1,0 +1,103 @@
+http://sandbox.radiopaedia.org/oauth/authorize?client_id=ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04&redirect_uri=http%3A%2F%2Flocalhost%3A52899%2FPostAuth.html&response_type=code
+var study = {
+                        series: seriesList,
+                        study_uid: $('#sel_studies').find('option:selected').val(),
+                        description: $('#var_studyDescription').text(),
+                        date: $('#var_studyDate').text(),
+                        modality: $('#var_modality').text(),
+                        findings: null,
+                        caption: null,
+                        images: 0,
+                        position: null
+                    }
+var series = {
+                        series_uid: $(this).find('td.td_seriesuid').html(),
+                        images: $(this).find('td.td_seriesimages').html(),
+                        description: $(this).find('td.td_seriesdescription').html()
+                    }
+                    
+                    public class UploadCase
+{
+    public string title { set; get; } txt_title
+    public int system_id { set; get; } sel_system
+    public int diagnostic_certainty_id { set; get; } sel_diagnostic
+    public bool suitable_for_quiz { set; get; } chk_quiz
+    public string presentation { set; get; } txt_presentation
+    public int age { set; get; } td_age
+    public string body { set; get; } txt_body
+}\
+public class UploadStudy
+{
+    public List<UploadSeries> series { set; get; }
+    public string study_uid { set; get; }
+    public string description { set; get; }
+    public string date { set; get; }
+    public string modality { set; get; }
+    public string findings { set; get; }
+    public string caption { set; get; }
+    public int images { set; get; }
+    public int position { set; get; }
+}
+
+
+
+[PetaPoco.TableName("Cases")]
+public class DbCase
+{
+    public int Id { set; get; }
+    public string case_id { set; get; }
+    public string username { set; get; }
+    public DateTime date { set; get; }
+    public string status { set; get; }
+    public string status_message { set; get; }
+    public string title { set; get; }
+    public int system_id { set; get; }
+    public int diagnostic_certainty_id { set; get; }
+    public bool suitable_for_quiz { set; get; }
+    public string presentation { set; get; }
+    public int age { set; get; }
+    public string body { set; get; }
+    [PetaPoco.Ignore]
+    public List<DbStudy> study_list { set; get; }
+}
+[PetaPoco.TableName("Series")]
+public class DbSeries
+{
+    public int Id { set; get; }
+    public string case_id { set; get; }
+    public string study_uid { set; get; }
+    public string description { set; get; }
+    public string images { set; get; }
+    public string series_uid { set; get; }
+}
+[PetaPoco.TableName("Studies")]
+public class DbStudy
+{
+    public int Id { set; get; }
+    public string case_id { set; get; }
+    public string study_uid { set; get; }
+    public string description { set; get; }
+    public DateTime? date { set; get; }
+    public string modality { set; get; }
+    public string findings { set; get; }
+    public string caption { set; get; }
+    public int images { set; get; }
+    public int position { set; get; }
+    public List<DbSeries> series { set; get; }
+}
+
+
+client = ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04
+Secret = 1f3a57940372fc9fbfb5f58efaee27c5d23d45c03ccf856bbc4c30af17bcb556
+urls = http://localhost:52899/PostAuth.html
+auth code=d8867064292a6df4b55b9cf898f6946cc3420f2ff033ee11514cd1d1f3f34d55
+
+http://sandbox.radiopaedia.org/oauth/token?client_id=ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04&client_secret=1f3a57940372fc9fbfb5f58efaee27c5d23d45c03ccf856bbc4c30af17bcb556&code=d8867064292a6df4b55b9cf898f6946cc3420f2ff033ee11514cd1d1f3f34d55&grant_type=authorization_code&redirect_uri=http://localhost:52899/PostAuth.html
+
+curl --data 'client_id=ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04&client_secret=1f3a57940372fc9fbfb5f58efaee27c5d23d45c03ccf856bbc4c30af17bcb556&code=d8867064292a6df4b55b9cf898f6946cc3420f2ff033ee11514cd1d1f3f34d55&grant_type=authorization_code&redirect_uri=http://localhost:52899/PostAuth.html' http://sandbox.radiopaedia.org/oauth/token
+
+curl --data "client_id=ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04&client_secret=1f3a57940372fc9fbfb5f58efaee27c5d23d45c03ccf856bbc4c30af17bcb556&code=524d7a66ba5c8d99cfc5008ccda38c2503ed09946d78929cbaac9382ead86d40&grant_type=authorization_code&redirect_uri=http://localhost:51339/PostAuth.aspx" --url http://sandbox.radiopaedia.org/oauth/token
+
+
+http://sandbox.radiopaedia.org/oauth/token?client_id=ba325141e3db766579feb0ba3b22d7087142053633a02d8d2c19f82bbcfd3d04&client_secret=1f3a57940372fc9fbfb5f58efaee27c5d23d45c03ccf856bbc4c30af17bcb556&code=524d7a66ba5c8d99cfc5008ccda38c2503ed09946d78929cbaac9382ead86d40&grant_type=authorization_code&redirect_uri=http://localhost:51339/PostAuth.aspx
+Token expiration

@@ -1,0 +1,1337 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Radiopaedia Uploader</title>
+
+    <!-- Bootstrap -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/plugins/toastr/build/toastr.min.css" rel="stylesheet">
+    <link href="assets/plugins/cropper/cropper.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        table tr.row_selected td {
+	        background-color: #578EBE;
+            color: white;
+        }
+        table tr.tr_disabled {
+            background-color: #BAB8B7;
+        }
+    </style>
+
+</head>
+<body>
+    <br /><br />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="pull-right">Radiopaedia Uploader | Add Case</h1>        
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-default pull-right" onclick="goHome(); return false;" id="btn_home"><i class="glyphicon glyphicon-home"></i> Home</button>        
+            </div>
+        </div>
+        <br />
+        <div class="row" id="div_patientSearch">
+            <div class="panel panel-primary">
+                <div class="panel-heading"><h3>Find Patient</h3></div>
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Patient ID</label>
+                            <input type="text" class="form-control" id="txt_patientSearch" debug="565022" />
+                            <br />
+                            <button id="btn_searchPatient" onclick="findPatient(); return false;" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="display:none" id="div_alreadyUploaded">
+            <div class="panel panel-danger">
+                <div class="panel-heading">Patient Already Uploaded</div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Studies for this patient has already been uploaded, please check the details below.</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" id="div_dupedetails">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button class="btn btn-danger" onclick="goHome(); return false;"><i class="glyphicon glyphicon-home"></i> Go Back</button>
+                            <button class="btn btn-success" onclick="continueAnyway(); return false;">Continue Anyway! <i class="glyphicon glyphicon-arrow-right"></i></button>                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="div_add">
+            <div class="row">
+                <div class-="col-md-12">
+                    <ul class="nav nav-tabs" id="ul_tabs">
+                        <li class="active"><a href="#tab_1" data-toggle="tab">Case</a></li>
+                        <li><a href="#tab_2" data-toggle="tab">Image Select</a></li>
+                        <li><a href="#tab_3" data-toggle="tab">Organise Studies</a></li>
+                        <li><a href="#tab_4" data-toggle="tab">Edit Images</a></li>
+                        <li><a href="#tab_5" data-toggle="tab">Discussion</a></li>
+                    </ul>
+                </div>
+            </div>
+            <br />
+            <div class="row">                
+                <div class="col-md-12">
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">  
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Case Details</h3></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Case Title</label>
+                                                <input type="text" class="form-control" id="txt_title" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>System</label>
+                                                <select class="form-control" id="sel_system">
+                                                    <option value="1">Breast</option>
+                                                    <option value="2">Vascular</option>
+                                                    <option value="3">Central Nervous System</option>
+                                                    <option value="4">Chest</option>
+                                                    <option value="6">Gastrointestinal</option>
+                                                    <option value="7">Head & Neck</option>
+                                                    <option value="8">Hepatobiliary</option>
+                                                    <option value="9">Musculoskeletal</option>
+                                                    <option value="11">Urogenital</option>
+                                                    <option value="12">Paediatrics</option>
+                                                    <option value="15">Spine</option>
+                                                    <option value="16">Cardiac</option>
+                                                    <option value="17">Interventional</option>
+                                                    <option value="18">Obstetrics</option>
+                                                    <option value="19">Gynaecology</option>
+                                                    <option value="20">Haematology</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Diagnostic Certainty</label>
+                                                <select class="form-control" id="sel_diagnostic" onchange="diagnosticChange();"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Explanation</label>
+                                                <textarea class="form-control" disabled="disabled" id="txt_explanation" rows="7"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <table>
+                                                <tr>
+                                                    <td><b>Suitable For Quiz?</b></td>
+                                                    <td style="padding-left:10px"><input type="checkbox" id="chk_quiz" /></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <table>
+                                                <tr>
+                                                    <td><b>Patient Age:</b></td>
+                                                    <td style="padding-left:10px" id="td_age"></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Presentation</label>
+                                                <textarea class="form-control" id="txt_presentation" rows="6"></textarea>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>                                                                                
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Image Selection</h3></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <table>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center; background-color:dimgray; color:white">PATIENT DETAILS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Patient Surname:</b></td>
+                                                    <td style="padding-left:10px;">
+                                                        <var id="var_patientSurname">var_patientSurname</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Patient First Name:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_patientFirstname">var_patientFirstname</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Date Of Birth:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_dob">var_dob</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Age At Study Date:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_age">var_age</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px; padding-bottom:30px"><b>Patient ID:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px; padding-bottom:30px">
+                                                        <var id="var_pid">var_pid</var>
+                                                    </td>
+                                                </tr>                                                
+                                            </table>
+                                        </div> 
+                                        <div class="col-md-8">
+                                            <table>                                                
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center; background-color:dimgray; color:white;">STUDY DETAILS</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Accession:</b></td>
+                                                    <td style="padding-left:10px;">
+                                                        <var id="var_accession">var_accession</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Study Description:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_studyDescription">var_studyDescription</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Modality:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_modality">var_modality</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Study Date:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_studyDate">var_studyDate</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding-top:10px;"><b>Total Images:</b></td>
+                                                    <td style="padding-top:10px; padding-left:10px;">
+                                                        <var id="var_studyImages">var_studyImages</var>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="text-align:center; padding-bottom:30px">
+                                                        <label>Select A Study</label>
+                                                        <select class="form-control input-sm" id="sel_studies" onchange="changeStudy();"></select>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>                                       
+                                    </div>
+                                    <br />
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Series In Study</label><br />
+                                            <p>Select the series stacks you wish to include by clicking on the row. If the number of images is more than 100, 
+                                            you must select a range that is less than 100 and/or not include every image(i.e. skip every nth image).</p>
+                                            <table class="table table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Series</th>                                                        
+                                                        <th width="8%">Start</th>
+                                                        <th width="8%">End</th>
+                                                        <th width="8%">Every</th>
+                                                        <th width="8%">Images</th>
+                                                        <th width="8%">Max Images</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_series"></tbody>
+                                            </table>
+                                            <button class="btn btn-primary" id="btn_addSeries" onclick="addSeries();"><i class="glyphicon glyphicon-plus"></i> Add Selected Series</button>
+                                            <!--<select multiple="multiple" id="series"></select>-->
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Selected Series</label>
+                                            <table class="table table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Study</th>
+                                                        <th>Date</th>
+                                                        <th>Series</th>
+                                                        <th>Images</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_selected"></tbody>
+                                            </table>
+                                            <br />
+                                            <button class="btn btn-danger" id="btn_delSeries" onclick="remSeries();"><i class="glyphicon glyphicon-minus"></i> Remove Selected Series</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                        </div>
+                        <div class="tab-pane" id="tab_3">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Organise Studies</h3></div>
+                                <div class="panel-body">
+                                    <label>Selected Studies</label>
+                                    <small>Click on each row to add more information</small>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table class="table table-bordered table-condensed">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Study Description</th>
+                                                        <th>Date</th>
+                                                        <th>Modality</th>
+                                                        <th>Series</th>
+                                                        <th>Images</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="tbody_allstudies"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label>Position</label>
+                                                <select class="form-control input-sm" id="sel_position"></select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Caption</label>
+                                                <input type="text" id="txt_caption" class="form-control input-sm" />
+                                            </div>
+                                        </div>
+                                        <!--<div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Modality</label>
+                                                <select class="form-control input-sm" id="sel_mod">
+
+                                                </select>
+                                            </div>
+                                        </div>-->
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Findings</label>
+                                                <textarea class="form-control" rows="6" id="txt_findings"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button class="btn btn-warning" id="btn_saveStudyInfo" onclick="saveStudyInfo();" disabled="disabled">
+                                                <i class="glyphicon glyphicon-floppy-disk"></i> Save Study Info
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                            
+                        </div>
+                        <div class="tab-pane" id="tab_4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Edit Images</h3></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <p>Click on the study row then the series row. You will then be able to load sample image from that series to crop.</p>
+                                        </div>                                        
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <table class="table table-bordered" id="tbl_edit_studies">
+                                                <thead>
+                                                    <tr><th colspan="3"><b>Selected Studies</b></th></tr>
+                                                </thead>
+                                                
+                                                <thead>
+                                                    <tr>
+                                                        <th>Date</th>
+                                                        <th>Description</th>
+                                                        <th>Modality</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <table class="table table-bordered" id="tbl_edit_series">
+                                                <thead>
+                                                    <tr><th colspan="3"><b>Selected Series</b></th></tr>
+                                                </thead>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Description</th>
+                                                        <th>Images</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
+                                            </table>
+                                            <p>Please note that loading an image can take up to a few minutes to complete so please be patient!</p>
+                                            <button class="btn btn-success" id="btn_loadimage" onclick="loadimage(); return false;" style="display:none">Load Image</button>                                            
+                                        </div>
+                                    </div>
+                                    <div class="row" id="div_imagerow">
+                                        <div class="col-md-12">
+                                            <img id="img_cropimage" src="">
+                                        </div>
+                                    </div>                                    
+                                    <div id="row_imagedetails" style="display:none">
+                                        <br />
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <b>Saved Crop Details:</b>
+                                                <ul>
+                                                    <li>X: <var id="var_savedX"></var></li>
+                                                    <li>Y: <var id="var_savedY"></var></li>
+                                                    <li>Height: <var id="var_savedH"></var></li>
+                                                    <li>Width: <var id="var_savedW"></var></li>
+                                                </ul>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <b>New Crop Details:</b>
+                                                <ul>
+                                                    <li>X: <var id="var_newX"></var></li>
+                                                    <li>Y: <var id="var_newY"></var></li>
+                                                    <li>Height: <var id="var_newH"></var></li>
+                                                    <li>Width: <var id="var_newW"></var></li>
+                                                </ul>
+                                            </div>
+                                        </div>  
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button class="btn btn-primary" onclick="saveDimensions(); return false;" id="btn_savedimensions" disabled="disabled">Save Dimensions</button>
+                                            </div>
+                                        </div>     
+                                    </div>
+                                                                 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_5">
+                            <div class="panel panel-default">
+                                <div class="panel-heading"><h3>Discussion</h3></div>
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Discussion <small>(can use HTML tags)</small></label>
+                                                <textarea class="form-control" id="txt_body" rows="10"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-default" onclick="backTab(); return false;" id="btn_back"><i class="glyphicon glyphicon-arrow-left"></i> Back</button>
+                    <button class="btn btn-default" onclick="nextTab(); return false;" id="btn_next">Next <i class="glyphicon glyphicon-arrow-right"></i> </button>
+                    <button class="btn btn-success pull-right" style="display:none" id="btn_submit" onclick="startSubmit();"><i class="glyphicon glyphicon-cloud-upload"></i> Submit</button>
+                    
+                    
+                </div>
+            </div>    
+        </div>            
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div id="div_unable" style="display:none">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading"><h3><i class="glyphicon glyphicon-alert"></i> Error</h3></div>
+                        <div class="panel-body">
+                            <p>This page cannot load without the right parameters! You will be redirected to the main page soon</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="div_noagent" style="display:none">
+                    <div class="panel panel-danger">
+                        <div class="panel-heading"><h3><i class="glyphicon glyphicon-alert"></i> Error</h3></div>
+                        <div class="panel-body">
+                            <p>The background agent app is not running or not accessible.</p>
+                            <p>This page cannot load without the background task running!</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="div_success" style="display:none">
+                    <div class="panel panel-success">
+                        <div class="panel-heading"><h3><i class="glyphicon glyphicon-check"></i> Success!</h3></div>
+                        <div class="panel-body">
+                            <p>Your case has successfully been inserted into the database pending upload. You will be redirected to the main page soon.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+    <br /><br /><br />
+    <textarea id="txt_debug" class="form-control" disabled="disabled" rows="10" style="display:none"></textarea>
+    <br /><br /><br />
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/purl.js"></script>
+    <script src="assets/plugins/fancybox/jquery.fancybox.js"></script>
+    <script src="assets/plugins/toastr/build/toastr.min.js"></script>    
+    <script src="assets/js/date.js"></script>
+    <script src="assets/plugins/cropper/cropper.min.js"></script>
+    <script src="assets/js/andy-helpers.js"></script>
+    
+
+    <script>
+        var diagnostic = null;
+        var studyList = null;
+        var selectedStudies = new Array();
+        var username = null;
+        var refresh = null;
+        var cropper = false;
+        $(document).ready(function () {
+            try {
+                $('#chk_quiz').prop('checked', true);
+                $('#div_add').hide();
+                $('#div_patientSearch').show();
+                $('#btn_searchPatient').prop('disabled', true);
+                username = $.url().param('username');
+                
+                //565022
+                if (isNull(username) || !username) { errorLoad(); return false; }                
+                else {
+                    refresh = username;
+                    $.ajax({
+                        url: "Handlers/GetUsername.ashx?refresh=" + username,
+                        success: function (data) {                            
+                            if (data.Success) {
+                                username = data.Data;
+                            } else { notify('error', data.Message); }
+                        }
+                    });
+                }
+                //if (isNull(patientid) || !patientid) { errorLoad(); return false; }
+                
+                $.ajax({
+                    url: "SiteJs/diagnostic_certainty.txt",
+                    dataType: "text",
+                    success: function (result) {
+                        diagnostic = JSON.parse(result);
+                        if (!isNull(diagnostic) && diagnostic.length > 0) {
+                            $(diagnostic).each(function () {
+                                $('#sel_diagnostic').append($("<option>").attr('value', this.ID).text(this.Name));
+                            });
+                            $('#sel_diagnostic').val('');
+                        } else { notify('error', 'cant parse');}
+                    }
+                });
+                $('#sel_system').val('');
+                
+                $('#btn_back').prop('disabled', true);
+                //$('#series').multiSelect({
+                //    selectableHeader: "<b>Series List</b>",
+                //    selectionHeader: "<b>Selected Series</b>"
+                //});
+                $('#btn_addSeries').prop('disabled', true);
+                $('#btn_delSeries').prop('disabled', true);
+                
+                $("#series").prop('disabled', true);
+                
+                
+                $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+                    $('#btn_submit').hide();
+                    var iNum = getActiveTab();
+                    $('#btn_next').prop('disabled', false);
+                    $('#btn_back').prop('disabled', false);                    
+                    if (iNum == 1) { $('#btn_back').prop('disabled', true); }                    
+                    if (iNum == 3) { populateAllStudies(); }
+                    if (iNum == 4) { populateEditStudies(); }
+                    if (iNum == 5) { $('#btn_next').prop('disabled', true); $('#btn_submit').show(); }
+                });
+
+                $('#tbody_series').on('click', 'td', function () {
+                    var tr = $(this).closest('tr');
+                    if ($(tr).hasClass('tr_disabled')) {
+                        return false;
+                    }
+                    if ($(tr).hasClass('row_selected')) {
+                        $(tr).removeClass('row_selected');
+                    }
+                    else {
+                        $(tr).addClass('row_selected');
+                    }
+                    var selectedRows = $('#tbody_series').find('tr.row_selected');
+                    if (selectedRows.length > 0) { $('#btn_addSeries').prop('disabled', false); }
+                    else { $('#btn_addSeries').prop('disabled', true); }
+                });
+
+                $('#tbl_edit_studies tbody').on('click', 'td', function () {
+                    var tr = $(this).closest('tr');
+                    $('#btn_loadimage').hide();
+                    $('#div_imagerow').hide();
+                    clearImageDetails();
+                    if ($(tr).hasClass('tr_disabled')) {
+                        return false;
+                    }
+                    if ($(tr).hasClass('row_selected')) {
+                        $(tr).removeClass('row_selected');
+                        $('#tbl_edit_series tbody').html('');                        
+                    }
+                    else {
+                        $('#tbl_edit_studies tbody').find('tr.row_selected').removeClass('row_selected');
+                        $(tr).addClass('row_selected');                        
+                        populateEditSeries($(tr).find('td.td_studyuid').html());
+                    }                    
+                });
+
+                $('#tbl_edit_series tbody').on('click', 'td', function () {
+                    $('#div_imagerow').hide();
+                    clearImageDetails();
+                    var tr = $(this).closest('tr');
+                    if ($(tr).hasClass('tr_disabled')) {
+                        return false;
+                    }
+                    if ($(tr).hasClass('row_selected')) {
+                        $(tr).removeClass('row_selected');
+                        $('#btn_loadimage').hide();
+                    }
+                    else {
+                        $('#tbl_edit_series tbody').find('tr.row_selected').removeClass('row_selected');
+                        $(tr).addClass('row_selected');
+                        $('#btn_loadimage').show();
+                        populateSavedImageDetails();
+                    }
+                });
+
+                $('#tbody_selected').on('click', 'td', function () {
+                    var tr = $(this).closest('tr');
+                    if ($(tr).hasClass('row_selected')) {
+                        $(tr).removeClass('row_selected');
+                    }
+                    else {
+                        $(tr).addClass('row_selected');
+                    }
+                    var selectedRows = $('#tbody_selected').find('tr.row_selected');
+                    if (selectedRows.length > 0) { $('#btn_delSeries').prop('disabled', false); }
+                    else { $('#btn_delSeries').prop('disabled', true); }
+                });
+
+                $('#tbody_allstudies').on('click', 'td', function () {
+                    var tr = $(this).closest('tr');
+                    if ($(tr).hasClass('row_selected')) {
+                        $(tr).removeClass('row_selected');
+                        $('#txt_findings').val('');
+                        $('#sel_position').val('');
+                        $('#txt_caption').val('');
+                        $('#txt_findings').prop('disabled', true);
+                        $('#sel_position').prop('disabled', true);
+                        $('#txt_caption').prop('disabled', true);
+                        $('#btn_saveStudyInfo').prop('disabled', true);
+                    }
+                    else {
+                        $('#tbody_allstudies').find('tr.row_selected').removeClass('row_selected');
+                        $(tr).addClass('row_selected');
+                        var st = getStudyFromUid($(tr).find('td.td_studyuid').html());                        
+                        $('#txt_findings').val(st.findings);                        
+                        $('#txt_caption').val(st.caption);
+                        setSelectedValue('sel_position', st.position);
+                        $('#txt_findings').prop('disabled', false);
+                        $('#sel_position').prop('disabled', false);
+                        $('#txt_caption').prop('disabled', false);
+                        $('#btn_saveStudyInfo').prop('disabled', false);
+                    }                    
+                });
+                checkAgent(null);
+                
+            } catch (e) { alert(e.message); }
+
+        });
+        function checkAgent(data) {
+            if (isNull(data)) {
+                ajaxHandler('Handlers/CheckAgent.ashx', 'get', checkAgent);
+            } else {
+                if (isNull(data.Success) || !data.Success) {
+                    $.fancybox.open({
+                        padding: 10,
+                        href: '#div_noagent',
+                        //width: 150,
+                        //height: 50,
+                        //autoSize: true,
+                        type: 'inline',
+                        modal: true
+                    });
+                    setTimeout(function () { window.location.replace('Default.aspx'); }, 5000);
+                } else { $('#btn_searchPatient').prop('disabled', false); }
+            }
+        }
+        function populateSavedImageDetails() {
+            var studyuid = $('#tbl_edit_studies tbody tr.row_selected').find('td.td_studyuid').html();
+            var seriesuid = $('#tbl_edit_series tbody tr.row_selected').find('td.td_seriesuid').html();
+            var study = getStudyFromUid(studyuid);
+            $(study.series).each(function () {
+                if (this.series_uid == seriesuid) {
+                    $('#var_savedX').text(this.crop_x);
+                    $('#var_savedY').text(this.crop_y);
+                    $('#var_savedH').text(this.crop_h);
+                    $('#var_savedW').text(this.crop_w);
+                }
+            })
+        }
+        function clearImageDetails() {
+            $('#row_imagedetails').hide();
+            $('#var_savedX').text('');
+            $('#var_savedY').text('');
+            $('#var_savedH').text('');
+            $('#var_savedW').text('');
+            $('#var_newX').text('');
+            $('#var_newY').text('');
+            $('#var_newH').text('');
+            $('#var_newW').text('');
+            $('#btn_savedimensions').prop('disabled', true);
+        }
+        function loadimage() {
+            var studyuid = $('#tbl_edit_studies tbody tr.row_selected').find('td.td_studyuid').html();
+            var seriesuid = $('#tbl_edit_series tbody tr.row_selected').find('td.td_seriesuid').html();
+            loadingModal();
+            ajaxHandler('Handlers/GetImage.ashx?studyuid=' + studyuid + '&seriesuid=' + seriesuid, 'get', postImageload);
+        }
+        function postImageload(data) {
+            if (isNull(data) || !data.Success) { $.fancybox.close(); notify('error', data.Message); return false; }
+            $('#div_imagerow').show();
+            $('#row_imagedetails').show();
+            
+            //document.getElementById('img_cropimage').setAttribute('src', data.Data);
+
+            $('#img_cropimage').attr('src', data.Data);
+
+            if (cropper) {
+                $('#img_cropimage').cropper('replace', data.Data);
+            } else {
+                $('#img_cropimage').cropper({
+                    movable: false,
+                    rotatable: false,
+                    scalable: false,
+                    zoomable: false,
+                    crop: function (e) {
+                        var x = 0;
+                        var y = 0;
+                        if (e.x > 0) { x = Math.round(e.x); }
+                        if (e.y > 0) { y = Math.round(e.y); }
+                        $('#var_newX').text(x);
+                        $('#var_newY').text(y);
+                        $('#var_newH').text(Math.round(e.height));
+                        $('#var_newW').text(Math.round(e.width));
+                        //console.clear();
+                        //console.log(e.x);
+                        //console.log(e.y);
+                        //console.log(e.width);
+                        //console.log(e.height);
+                    }
+                });
+                cropper = true;
+            }            
+            
+            
+            $('#btn_savedimensions').prop('disabled', false);
+            $.fancybox.close();
+        }
+        function saveDimensions() {
+            var studyuid = $('#tbl_edit_studies tbody tr.row_selected').find('td.td_studyuid').html();
+            var seriesuid = $('#tbl_edit_series tbody tr.row_selected').find('td.td_seriesuid').html();
+            $(selectedStudies).each(function () {
+                if (this.study_uid == studyuid) {
+                    var study = this;
+                    $(study.series).each(function () {
+                        if (this.series_uid == seriesuid) {
+                            this.crop_x = $('#var_newX').text();
+                            this.crop_y = $('#var_newY').text();
+                            this.crop_h = $('#var_newH').text();
+                            this.crop_w = $('#var_newW').text();
+                            $('#var_savedX').text(this.crop_x);
+                            $('#var_savedY').text(this.crop_y);
+                            $('#var_savedH').text(this.crop_h);
+                            $('#var_savedW').text(this.crop_w);
+                            notify('success', 'New crop rectangle saved against this series!');
+                        }
+                    })
+                }               
+            })            
+        }
+            
+        function errorLoad() {
+            $.fancybox.open({
+                padding: 10,
+                href: '#div_unable',
+                //width: 150,
+                //height: 50,
+                //autoSize: true,
+                type: 'inline',
+                modal: true
+            });
+            setTimeout(function () { window.location.replace('Default.aspx'); }, 5000);
+        }
+        function startSubmit() {
+            try{
+                if (!validateCase()) { return false; }
+                if (!validateImages()) { return false; }
+                if (!validateStudies()) { return false; }
+                var ucase = {
+                    title: $('#txt_title').val(),
+                    system_id: $('#sel_system').find('option:selected').val(),
+                    diagnostic_certainty_id: $('#sel_diagnostic').find('option:selected').val(),
+                    suitable_for_quiz: $('#chk_quiz').is(':checked'),
+                    presentation: $('#txt_presentation').val(),
+                    age: parseInt($('#td_age').html()),
+                    body: $('#txt_body').val()
+                }
+                var pkg = {
+                    case_details: ucase,
+                    studies: selectedStudies,
+                    username: username
+                }
+                ajaxHandler('Handlers/InsertCase.ashx', 'post', postSubmit, pkg);
+            } catch (e) { alert(e.message); }            
+        }
+        function postSubmit(data) {
+            if (isNull(data)) { return false; }
+            if (data.Success) {
+                $.fancybox.open({
+                    padding: 10,
+                    href: '#div_success',
+                    type: 'inline',
+                    modal: true
+                });
+                setTimeout(function () { window.location.replace('Default.aspx?refresh=' + refresh); }, 5000);
+            } else {
+                notify('warning', data.Message);
+                return false;
+            }
+        }
+        function goHome() {
+            window.location.replace('Default.aspx?refresh=' + refresh);
+        }
+        function validateDiscussion() {
+            if (!$('#txt_body').val()) {
+                $('#ul_tabs a[href="#tab_4"]').tab('show');
+                notify('warning', 'No discussion text entered');
+                return false;
+            }
+            return true;
+        }
+        function validateImages() {
+            if (isNull(selectedStudies) || selectedStudies.length == 0) {
+                $('#ul_tabs a[href="#tab_2"]').tab('show');
+                notify('warning', 'No images selected yet');
+                return false;
+            }
+            return true;
+        }
+        function validateStudies() {
+            var passed = true;
+            var msg = "";
+            $(selectedStudies).each(function () {
+                //if (isNull(this.caption) || !this.caption) {
+                //    msg = "No caption for study " + this.description + " | " + this.date;
+                //    passed = false;
+                //    return false;
+                //}
+                if (isNull(this.findings) || !this.findings) {
+                    msg = "No findings for study " + this.description + " | " + this.date;
+                    passed = false;
+                    return false;
+                }
+            })
+            if (!passed) {
+                $('#ul_tabs a[href="#tab_3"]').tab('show');
+                notify('warning', msg);
+            }
+            return passed;
+        }
+        function validateCase() {
+            if (!$('#txt_title').val()) {
+                $('#ul_tabs a[href="#tab_1"]').tab('show');
+                notify('warning', 'No title provided');                
+                return false;
+            }
+            
+            if (!$('#txt_presentation').val()) {
+                $('#ul_tabs a[href="#tab_1"]').tab('show');
+                notify('warning', 'No presentation provided');                
+                return false;
+            }
+
+            if (isNull($('#sel_system').find('option:selected').val()) || !$('#sel_system').find('option:selected').val()) {
+                $('#ul_tabs a[href="#tab_1"]').tab('show');
+                notify('warning', 'No system provided');                
+                return false;
+            }
+
+            if (isNull($('#sel_diagnostic').find('option:selected').val()) || !$('#sel_diagnostic').find('option:selected').val()) {
+                $('#ul_tabs a[href="#tab_1"]').tab('show');
+                notify('warning', 'No diagnostic certainty provided');                
+                return false;
+            }
+            return true;
+        }
+        function saveStudyInfo() {
+            if (!$('#txt_findings').val()) { notify('warning', 'No findings provided'); return false; }
+            //if (!$('#txt_caption').val()) { notify('warning', 'No caption provided'); return false; }
+            var position = $('#sel_position').find('option:selected').val();
+            if (!position) { notify('warning', 'No position selected'); return false; }
+            Array.prototype.move = function (from, to) {
+                this.splice(to, 0, this.splice(from, 1)[0]);
+            };
+            var uid = $('#tbody_allstudies tr.row_selected').find('td.td_studyuid').html();
+
+            //$('#pre_debug').text(uid + "\n\n\n" + $('#pre_debug').text());
+
+            var index = -1;
+            for (var i = 0; i < selectedStudies.length; i++) {
+                if (selectedStudies[i].study_uid == uid) {
+                    selectedStudies[i].findings = $('#txt_findings').val();
+                    selectedStudies[i].caption = $('#txt_caption').val();
+                    index = i;
+                    break;
+                }
+            }
+            selectedStudies.move(index, parseInt(position) - 1);
+            orderSelectedStudies();
+            populateAllStudies();
+        }
+        function getStudyFromUid(uid) {
+            var st = null;
+            $(selectedStudies).each(function () {                
+                if (this.study_uid == uid) {
+                    st = this;
+                    return false;
+                }
+            })
+            return st;
+        }
+        function populateAllStudies() {
+            $('#tbody_allstudies').html('');
+            var sb = "";
+            $('#sel_position').find('option').remove();
+            $(selectedStudies).each(function () {
+                sb += '<tr>';
+                sb += '<td>' + this.position + '</td>';
+                sb += '<td>' + this.description + '</td>';
+                sb += '<td>' + this.date + '</td>';
+                sb += '<td>' + this.modality + '</td>';
+                sb += '<td>' + this.series.length + '</td>';
+                sb += '<td>' + this.images + '</td>';
+                sb += '<td class="td_studyuid" style="display:none">' + this.study_uid + '</td>';
+                sb += '</tr>';
+                $('#sel_position').append($("<option>").attr('value', this.position).text(this.position));
+            });
+            $('#tbody_allstudies').html(sb);
+            $('#txt_findings').val('');
+            $('#sel_position').val('');
+            $('#txt_caption').val('');
+            $('#txt_findings').prop('disabled', true);
+            $('#sel_position').prop('disabled', true);
+            $('#txt_caption').prop('disabled', true);
+        }
+        function populateEditStudies() {
+            var sb = "";
+            $(selectedStudies).each(function () {
+                sb += '<tr>';
+                sb += '<td>' + this.date + '</td>';
+                sb += '<td>' + this.description + '</td>';                
+                sb += '<td>' + this.modality + '</td>';                
+                sb += '<td class="td_studyuid" style="display:none">' + this.study_uid + '</td>';
+                sb += '</tr>';                
+            });
+            $('#tbl_edit_studies tbody').html(sb);
+        }
+        function populateEditSeries(studyuid) {
+            var sb = "";
+            $(selectedStudies).each(function () {
+                if (this.study_uid == studyuid) {
+                    var study = this;
+                    $(study.series).each(function () {
+                        sb += '<tr>';
+                        sb += '<td>' + this.description + '</td>';
+                        sb += '<td>' + this.images + '</td>';
+                        sb += '<td class="td_seriesuid" style="display:none">' + this.series_uid + '</td>';
+                        sb += '</tr>';
+                    });
+                }
+            });
+            $('#tbl_edit_series tbody').html(sb);
+        }
+        function orderSelectedStudies() {
+            for (var i = 0; i < selectedStudies.length; i++) { selectedStudies[i].position = i+1; }
+        }
+        function remSeries() {
+            try{
+                var selectedRows = $('#tbody_selected').find('tr.row_selected');
+                $(selectedRows).each(function () {
+                    var seriesUid = $(this).find('td.td_seriesuid').html();
+                    for (var i = selectedStudies.length - 1; i > -1; i--) {                        
+                        selectedStudies[i].series = $.grep(selectedStudies[i].series, function (value) { return value.series_uid != seriesUid; });                        
+                    }                    
+                });
+                selectedStudies = $.grep(selectedStudies, function (value) { return value.series.length > 0; })
+                drawSelectedTable();
+                $('#tbody_selected').find('tr.row_selected').removeClass('row_selected');
+                $('#btn_delSeries').prop('disabled', true);
+                orderSelectedStudies();
+
+                //$('#txt_debug').val(JSON.stringify(selectedStudies));
+            } catch (e) { alert(e.message);}
+            
+        }        
+        function diagnosticChange() {
+            var id = $('#sel_diagnostic').find('option:selected').val();
+            if (!isNull(diagnostic) && diagnostic.length > 0) {
+                $(diagnostic).each(function () {
+                    if (this.ID == id) {
+                        $('#txt_explanation').val(this.Description);
+                    }
+                });
+            }
+        }
+        function drawSelectedTable() {
+            $('#tbody_selected').html('');
+            var sb;
+            $(selectedStudies).each(function () {
+                var st = this;
+                $(st.series).each(function () {
+                    sb += '<tr>';
+                    sb += '<td class="td_studydescription">' + st.description + '</td>';
+                    sb += '<td class="td_studydate">' + st.date + '</td>';
+                    sb += '<td class="td_seriesdescription">' + this.description + '</td>';
+                    sb += '<td class="td_seriesimages">' + this.images + '</td>';
+                    sb += '<td class="td_seriesuid" style="display:none">' + this.series_uid + '</td>';
+                    sb += '</tr>';
+                });
+            });
+            $('#tbody_selected').html(sb);            
+            //$('#pre_debug').text(JSON.stringify(selectedStudies));
+        }
+        function addSeries() {
+            try{
+
+                var selectedRows = $('#tbody_series').find('tr.row_selected');
+                var seriesList = new Array();
+                var currentStudyUid = $('#sel_studies').find('option:selected').val();
+                var newStudy = true;
+                $(selectedRows).each(function () {
+
+                    var series = {
+                        series_uid: $(this).find('td.td_seriesuid').html(),
+                        images: $(this).find('td.td_seriesimages').html(),
+                        description: $(this).find('td.td_seriesdescription').html(),
+                        crop_x: null,
+                        crop_y: null,
+                        crop_h: null,
+                        crop_w: null,
+                        window_wc: null,
+                        window_ww: null,
+                        every_image: null,
+                        start_image: null,
+                        end_image: null
+                    }
+                    if ($(this).find('input.in_seriesStart').length) {
+                        series.start_image = $(this).find('input.in_seriesStart').val();
+                    } else {
+                        series.start_image = $(this).find('td.td_seriesStart').html();
+                    }
+                    if ($(this).find('input.in_seriesEnd').length) {
+                        series.end_image = $(this).find('input.in_seriesEnd').val();
+                    } else {
+                        series.end_image = $(this).find('td.td_seriesEnd').html();
+                    }
+                    if ($(this).find('input.in_seriesEveryImage').length) {
+                        series.every_image = $(this).find('input.in_seriesEveryImage').val();
+                    } else {
+                        series.every_image = $(this).find('td.td_seriesEveryImage').html();
+                    }
+                    //console.log(series);
+                    var foundInList = false;
+                    $(selectedStudies).each(function () {
+                        if (this.study_uid == currentStudyUid) {
+                            var thisStudy = this;
+                            newStudy = false;
+                            $(thisStudy.series).each(function () {
+                                if (this.series_uid == series.series_uid) {
+                                    foundInList = true;
+                                    return false;
+                                }
+                            })
+                            if (foundInList) { return false; } else {
+                                this.series.push(series);
+                                this.images += series.images;
+                            }
+                        }
+                    })
+                    if (!foundInList && newStudy) { seriesList.push(series); }
+                })
+               
+                if (newStudy) {
+                    var study = {
+                        series: seriesList,
+                        study_uid: $('#sel_studies').find('option:selected').val(),
+                        description: $('#var_studyDescription').text(),
+                        date: $('#var_studyDate').text(),
+                        modality: $('#var_modality').text(),
+                        findings: null,
+                        caption: null,
+                        images: 0,
+                        position: null
+                    }
+                    $(seriesList).each(function () { study.images += parseInt(this.images) });
+                    selectedStudies.push(study);
+                }
+                
+                $('#tbody_series').find('tr.row_selected').removeClass('row_selected');
+                $('#btn_addSeries').prop('disabled', true);
+                drawSelectedTable();
+                orderSelectedStudies();
+
+                //$('#txt_debug').val(JSON.stringify(selectedStudies));
+                //console.log(selectedStudies);
+            } catch (e) { alert(e.message);}            
+        }
+        function findPatient() {
+            if (!$('#txt_patientSearch').val()) {
+                notify('warning', 'No patient ID provided');
+                return false;
+            }
+            loadingModal();
+            ajaxHandler('Handlers/GetStudy.ashx?patientid=' + $('#txt_patientSearch').val(), 'get', populateStudy);
+        }
+        function populateStudy(data) {
+            if (data.Success) {                
+                studyList = data.Data.PatientStudies;                
+                $(studyList).each(function () {
+                    $('#sel_studies').append($("<option>").attr('value', this.StudyUid).text((new Date(this.StudyDate)).toString("dd/MM/yyyy HH:mm") + ' | ' + this.StudyDescription));
+                });
+                $('#sel_studies').val('');
+                //populatePatientDetails(studyList[0]);
+
+                $('#var_patientSurname').text(studyList[0].PatientSurname);
+                $('#var_patientFirstname').text(studyList[0].PatientFirstname);
+                $('#var_dob').text((new Date(studyList[0].PatientDob)).toString("dd/MM/yyyy"));
+                $('#var_pid').text(studyList[0].PatientId);
+                $('#var_age').text(studyList[0].PatientAge);
+                $('#td_age').html(studyList[0].PatientAge);
+
+                if (!isNull(data.Data.UploadedCases) && data.Data.UploadedCases.length > 0) {
+                    var sb = "";
+                    sb += '<ul>';
+                    sb += '<li><b>Name: </b> ' + data.Data.UploadedCases[0].study_list[0].patient_name + '</li>';
+                    sb += '<li><b>Birthdate: </b> ' + (new Date(data.Data.UploadedCases[0].study_list[0].patient_dob)).toString("dd/MM/yyyy") + '</li>';
+                    sb += '<li><b>Patient ID: </b> ' + data.Data.UploadedCases[0].study_list[0].patient_id + '</li>';
+                    sb += '</ul>';
+                    $(data.Data.UploadedCases).each(function () {
+                        sb += '<div class="row"><div class="col-md-12">';
+                        sb += '<div class="panel panel-warning">';
+                        sb += '<div class="panel-heading">Case: ' + this.title + '</div>';
+                        sb += '<div class="panel-body">';
+                        sb += '<ul>';
+                        sb += '<li><b>Username: </b> ' + this.username + '</li>';
+                        sb += '<li><b>DB Case ID: </b> ' + this.case_id + '</li>';
+                        sb += '<li><b>Radiopaedia Case #: </b> <a href="http://radiopaedia.org/cases/' + this.r_case_id + '">' + this.r_case_id + '</a></li>';
+                        sb += '</ul>';
+                        sb += '<table class="table table-bordered">';
+                        sb += '<tr><td><b>Study Date</b></td><td><b>Study</b></td><td><b>Series</b></td><td><b>Modality</b></td><td><b>Images</b></td></tr>';                       
+                        $(this.study_list).each(function () {
+                            var study = this;                            
+                            $(study.series).each(function () {
+                                sb += '<tr>';
+                                sb += '<td>' + (new Date(study.date)).toString("dd/MM/yyyy HH:mm") + '</td>';
+                                sb += '<td>' + study.description + '</td>';
+                                sb += '<td>' + this.description + '</td>';
+                                sb += '<td>' + study.modality + '</td>';
+                                sb += '<td>' + this.images + '</td>';
+                                sb += '</tr>';
+                            })
+                        })
+                        sb += '</table></div></div></div></div>';
+                    })                    
+                    $('#div_dupedetails').html(sb);
+                    $('#div_alreadyUploaded').show();
+                } else {
+                    $('#div_add').show();
+                    $('#div_patientSearch').hide();
+                    $('#div_alreadyUploaded').hide();
+                }
+                $.fancybox.close();
+            } else { $.fancybox.close(); notify('error', data.Message); }
+        }
+        function continueAnyway() {
+            $('#div_add').show();
+            $('#div_patientSearch').hide();
+            $('#div_alreadyUploaded').hide();
+        }
+        function populatePatientDetails(study) {
+            
+            $('#div_add').show();
+            $('#div_patientSearch').hide();
+            $.fancybox.close();
+        }
+        function changeStudy() {
+            var uid = $('#sel_studies').find('option:selected').val();
+            $(studyList).each(function () {
+                if (uid == this.StudyUid) {
+                    $('#var_accession').text(this.Accession);
+                    $('#var_studyDescription').text(this.StudyDescription);
+                    $('#var_modality').text(this.StudyModality);
+                    $('#var_studyDate').text((new Date(this.StudyDate)).toString("dd/MM/yyyy HH:mm"));
+                    $('#var_studyImages').text(this.Images);                    
+                    populateSeriesList(this);                    
+                }
+            });
+            
+        }
+        
+        
+        function nextTab() {
+            var iNum = getActiveTab();
+            iNum = iNum + 1;
+            $('#ul_tabs a[href="#tab_' + iNum + '"]').tab('show');
+        }
+        function backTab() {
+            var iNum = getActiveTab();
+            iNum = iNum - 1;
+            $('#ul_tabs a[href="#tab_' + iNum + '"]').tab('show');
+        }
+        function getActiveTab() {
+            try {
+                var link = $('#ul_tabs li.active').children("a").attr("href");
+                var split = link.split('_');
+                var num = parseInt(split[1]);
+                return num;
+            } catch (e) { return -1; }
+        }
+        function populateSeriesList(study) {
+            var sb;
+            $(study.Series).each(function () {
+                if (this.Images > 100) {
+                    sb += '<tr class="tr_disabled" >';
+                    
+                } else {
+                    sb += '<tr>';
+                    //sb += '<td class="td_seriesdescription">' + this.SeriesDescription + '</td>';
+                    //sb += '<td class="td_seriesStart">1</td>';
+                    //sb += '<td class="td_seriesEnd">' + this.Images + '</td>';
+                    //sb += '<td class="td_seriesEveryImage">1</td>';
+                    //sb += '<td class="td_seriesimages">' + this.Images + '</td>';
+                    //sb += '<td style="display:none" class="td_seriesuid">' + this.SeriesUid + '</td>';
+                }
+                sb += '<td class="td_seriesdescription">' + this.SeriesDescription + '</td>';
+                sb += '<td class="td_seriesStart"><input type="text" class="form-control in_seriesStart" value="1" oninput="seriesImageChange(\'' + this.SeriesUid + '\');" /></td>';
+                sb += '<td class="td_seriesEnd"><input type="text" class="form-control in_seriesEnd" value="' + this.Images + '" oninput="seriesImageChange(\'' + this.SeriesUid + '\');"/></td>';
+                sb += '<td class="td_seriesEveryImage"><input type="text" class="form-control in_seriesEveryImage" value="1" oninput="seriesImageChange(\'' + this.SeriesUid + '\');"/></td>';
+                sb += '<td class="td_seriesimages">' + this.Images + '</td>';
+                sb += '<td class="td_originalImages">' + this.Images + '</td>';
+                sb += '<td style="display:none" class="td_seriesuid">' + this.SeriesUid + '</td>';
+                sb += '</tr>';
+            });
+            $('#tbody_series').html(sb);
+            $('#tbody_series tr.row_selected').removeClass('row_selected');            
+        }
+        function seriesImageChange(seriesUid) {
+            var allRows = $('#tbody_series').find('tr');
+            $(allRows).each(function () {
+                if ($(this).find('td.td_seriesuid').html() == seriesUid) {
+                    var originalImages = parseInt($(this).find('td.td_originalImages').html());
+                    $(this).find('td.td_seriesimages').html($(this).find('td.td_seriesimages').html());
+                    var start = $(this).find('input.in_seriesStart').val();
+                    var end = $(this).find('input.in_seriesEnd').val();
+                    var every = $(this).find('input.in_seriesEveryImage').val();
+                    //console.log(start + '|' + end + '|' + every);
+                    if (isNaN(start) || !start) { notify('warning', 'Start image is not a number'); return false; }
+                    if (isNaN(end) || !end) { notify('warning', 'End image is not a number'); return false; }
+                    if (isNaN(every) || !every) { notify('warning', 'Every image is not a number'); return false; }
+                    start = parseInt(start);
+                    end = parseInt(end);
+                    every = parseInt(every);
+                    if (start < 1) { notify('warning', 'Start image cannot be less than 1'); return false; }
+                    if (start > end) { notify('warning', 'Start image cannot be greater than end image'); return false; }
+                    if (end < start) { notify('warning', 'End image cannot be less than start image'); return false; }
+                    var range = end - (start - 1);
+                    if (every > range) { notify('warning', 'End image cannot be greater than range of images'); return false; }
+                    var images = Math.ceil(range / every);
+                    //console.log(originalImages);
+                    if (images > originalImages) {
+                        notify('warning', 'Culled images cannot be greater than original maximum set of images!');
+                        $(this).find('td.td_seriesimages').html(originalImages);
+                        return false;
+                    }
+
+                    $(this).find('td.td_seriesimages').html(images);
+                    if (images < 100) {
+                        if ($(this).hasClass('tr_disabled')) {
+                            $(this).removeClass('tr_disabled');
+                        }                                                
+                    } else {
+                        if (!$(this).hasClass('tr_disabled')) {
+                            $(this).addClass('tr_disabled');
+                        }
+                    }
+                    return false;
+                }
+            })
+        }
+    </script>
+
+</body>
+</html>

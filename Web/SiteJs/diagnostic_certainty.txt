@@ -1,0 +1,22 @@
+﻿  [{
+  	"ID": 1,
+  	"Name": "Possible",
+  	"Description": "The diagnosis is possible but has not been established for certain. There are other differential diagnostic possibilities."
+  }, {
+  	"ID": 2,
+  	"Name": "Probable",
+  	"Description": "The diagnosis is considered by far the most likely but has not been established for certain. Other unlikely differential diagnostic possibilities exist."
+  }, {
+  	"ID": 3,
+  	"Name": "Confirmed unsubstantiated",
+  	"Description": "The diagnosis is considered to be almost certain based on the highly characteristic imaging appearance or based on clinical, surgical or pathological knowledge obtained by the uploader from a secondary source rather than a primary source. A statement regarding this secondary source of proof should be included with the case."
+  }, {
+  	"ID": 4,
+  	"Name": "Confirmed substantiated",
+  	"Description": "The diagnosis is 100% certain based on the unequivocal or pathognomonic imaging appearance, or based on clinical, surgical or pathological proof directly obtained from a primary source by the uploader. A statement regarding this primary source of proof, along with appropriate substantiating evidence (e.g. histology report/slides, diagnostic laboratory test/values), should be included with the case."
+  }, {
+  	"ID": 5,
+  	"Name": "Not applicable",
+  	"Description": "The images are not of a patient with a particular diagnosis. For example, they may be a normal scan for teaching purposes, or alternatively a diagram or flow chart."
+  }]
+

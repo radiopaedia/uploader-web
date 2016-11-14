@@ -1,0 +1,310 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RUPLDR | Configure Uploader</title>
+
+    <!-- Bootstrap -->
+    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+    <link href="assets/plugins/toastr/build/toastr.min.css" rel="stylesheet">
+    <link href="assets/plugins/multiselect/css/multi-select.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="pull-right">Configure Uploader</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Database Connection String</label>
+                    <input type="text" class="form-control" id="txt_cs" disabled="disabled"/>
+                </div>
+                <button class="btn" id="btn_test" onclick="test(null); return false;">Test Connection</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Saved PACS Nodes</label>
+                    <select class="form-control" id="sel_nodes" onchange="nodeChange();"></select>
+                </div>
+                
+            </div>
+            <div class="col-md-9">
+                <label>Node Info</label>
+                <table style="width:100%">
+                    <tr>
+                        <td>Id</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" disabled="disabled" id="txt_id"/></td>
+                        <td style="padding-left:10px; padding-top:10px">Selected?</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="checkbox" id="chk_selected"/></td>
+                    </tr>    
+                    <tr>
+                        <td style="padding-top:10px">Local AET</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_localae" /></td>
+                        <td style="padding-left:10px; padding-top:10px">Local Storage Path</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control" id="txt_path" /></td>
+                    </tr>    
+                    <tr>
+                        <td style="padding-top:10px;" colspan="4"><b>PACS Node Details</b></td>                        
+                    </tr>             
+                    <tr>
+                        <td style="padding-top:10px">IP</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_ip"/></td>
+                        <td style="padding-left:10px; padding-top:10px">Port</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_port"/></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:10px">AET</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_aet"/></td>
+                        <td style="padding-left:10px; padding-top:10px">Description</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_description"/></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:10px">Notes</td>
+                        <td style="padding-left:10px; padding-top:10px" colspan="3"><input type="text" class="form-control input-sm" id="txt_notes"/></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:10px"></td>
+                        <td style="padding-top:10px"></td>
+                        <td style="padding-top:10px"></td>
+                        <td style="padding-left:10px; padding-top:10px; text-align:right"><button class="btn btn-primary" onclick="saveNode(null);">Save</button></td>
+                    </tr>
+                </table>                
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-3">
+
+            </div>
+            <div class="col-md-9">
+                <label>Radiopaedia API Details</label>
+                <table style="width:100%">
+                    <tr>
+                        <td>Site ID</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_siteid" /></td>
+                    </tr>
+                    <tr>
+                        <td>Site Secret</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_sitesecret" /></td>
+                    </tr>
+                    <tr>
+                        <td>Redirect URL</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_redirect" /></td>
+                    </tr>
+                    <tr>
+                        <td>OAuth Endpoint</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_oauth"/></td>
+                    </tr>
+                    <tr>
+                        <td>Cases Endpoint</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_casesurl" /></td>
+                    </tr>
+                    <tr>
+                        <td>Users Endpoint</td>
+                        <td style="padding-left:10px; padding-top:10px"><input type="text" class="form-control input-sm" id="txt_userurl" /></td>
+                    </tr>
+                    <tr>
+                        <td style="padding-top:10px"></td>
+                        <td style="padding-left:10px; padding-top:10px; text-align:right"><button class="btn btn-primary" onclick="saveApi(null);">Save</button></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/purl.js"></script>
+    <script src="assets/plugins/fancybox/jquery.fancybox.js"></script>
+    <script src="assets/plugins/toastr/build/toastr.min.js"></script>
+    <script src="assets/plugins/multiselect/js/jquery.multi-select.js"></script>
+    <script src="assets/js/date.js"></script>
+    <script src="assets/js/andy-helpers.js"></script>
+
+    <script>
+        var nodes = null;
+        var add = false;
+        var apiclient = null;
+        $(document).ready(function () {
+
+            try{
+
+                loadingModal();                
+                populateNodes(null);
+                $.fancybox.close();
+            } catch (e) { $.fancybox.close(); alert(e.message); }
+
+            
+
+        });
+        function populateNodes(data) {            
+            if (isNull(data)) {
+                ajaxHandler('Handlers/GetConfig.ashx', 'get', populateNodes);
+            } else {
+                if (data.Success) {
+                    $('#txt_cs').val(data.Data.ConnectionString);
+                    nodes = data.Data.Nodes;                    
+                    $('#sel_nodes').find('option').remove();
+                    $(nodes).each(function () {
+                        $('#sel_nodes').append($("<option>").attr('value', this.Id).text(this.Description));
+                    });
+                    $('#sel_nodes').append($("<option>").attr('value', -1).text('Add New'));
+                    clearInputs(true);
+                    $('#sel_nodes').val('');
+                    if (!isNull(data.Data.SiteApi)) {
+                        apiclient = data.Data.SiteApi;                        
+                    } else {
+                        apiclient = {
+                            id: 0,
+                            site_id: "",
+                            site_secret: "",
+                            redirect_url: "",
+                            oauth_url: "http://radiopaedia.org/oauth/",
+                            cases_url: "http://radiopaedia.org/api/v1/cases/",
+                            users_url: "http://radiopaedia.org/api/v1/users/current"
+                        }
+                    }
+                    $('#txt_siteid').val(data.Data.SiteApi.site_id);
+                    $('#txt_sitesecret').val(data.Data.SiteApi.site_secret);
+                    $('#txt_redirect').val(data.Data.SiteApi.redirect_url);
+                    $('#txt_oauth').val(data.Data.SiteApi.oauth_url);
+                    $('#txt_casesurl').val(data.Data.SiteApi.cases_url);
+                    $('#txt_userurl').val(data.Data.SiteApi.users_url);
+                }
+            }            
+        }
+        function nodeChange() {
+            var id = $('#sel_nodes').find('option:selected').val();
+            if (id == -1) {
+                add = true;
+                clearInputs();
+            } else {
+                add = false;
+                $(nodes).each(function () {
+                    if (this.Id == id) {                        
+                        $('#txt_id').val(this.Id);
+                        $('#txt_localae').val(this.LocalAe);
+                        $('#txt_ip').val(this.IP);
+                        $('#txt_port').val(this.Port);
+                        $('#txt_aet').val(this.AET);
+                        $('#txt_description').val(this.Description);
+                        $('#txt_path').val(this.LocalStorage);
+                        $('#txt_notes').val(this.Notes);
+                        if (this.Selected) { $('#chk_selected').prop('checked', true); } else { $('#chk_selected').prop('checked', false); }
+                    }
+                });
+            }
+
+            $('#txt_localae').prop('disabled', false);
+            $('#txt_ip').prop('disabled', false);
+            $('#txt_port').prop('disabled', false);
+            $('#txt_aet').prop('disabled', false);
+            $('#txt_description').prop('disabled', false);
+            $('#txt_notes').prop('disabled', false);
+            $('#chk_selected').prop('disabled', false);
+            $('#txt_path').prop('disabled', false);
+
+        }
+        function saveApi(data) {
+            if (isNull(data)) {
+                apiclient.site_id = $('#txt_siteid').val();
+                apiclient.site_secret = $('#txt_sitesecret').val();
+                apiclient.redirect_url = $('#txt_redirect').val();
+                apiclient.oauth_url = $('#txt_oauth').val();
+                apiclient.cases_url = $('#txt_casesurl').val();
+                apiclient.users_url = $('#txt_userurl').val();
+                ajaxHandler('Handlers/EditApi.ashx', 'post', saveApi, apiclient);
+            } else {
+                if (!data.Success) { notify('error', data.Message); }
+                else { notify('success', data.Message); }
+            }
+        }
+        function validateNode() {
+            if (!$('#txt_localae').val()) { notify('warning', 'No Local AET provided'); return false; }
+            if (!$('#txt_ip').val()) { notify('warning', 'No IP provided'); return false; }
+            if (!$('#txt_path').val()) { notify('warning', 'No local storage path provided'); return false; }
+            if (!$('#txt_port').val()) { notify('warning', 'No port provided'); return false; }
+            if (!$('#txt_aet').val()) { notify('warning', 'No AET provided'); return false; }
+            if (!$('#txt_description').val()) { notify('warning', 'No description provided'); return false; }
+
+            if (isNaN($('#txt_port').val())) { notify('warning', 'Invalid Port Number'); return false; }
+
+            return true;
+        }
+        function saveNode(data) {
+            if (isNull(data)) {
+                if (!validateNode()) { return false; }
+                
+                var node = {
+                    IP: $('#txt_ip').val(),
+                    LocalAe: $('#txt_localae').val(),
+                    Port: parseInt($('#txt_port').val()),
+                    AET: $('#txt_aet').val(),
+                    Description: $('#txt_description').val(),
+                    Selected: $('#chk_selected').is(':checked'),
+                    Notes: $('#txt_notes').val(),
+                    LocalStorage: $('#txt_path').val()
+                }
+                var url = 'Handlers/EditNode.ashx';
+                if (add) { url = 'Handlers/AddNode.ashx'; } else {
+                    node.Id = $('#txt_id').val();
+                }
+                loadingModal();
+                ajaxHandler(url, 'post', saveNode, node);
+            } else {
+                $.fancybox.close();
+                if (data.Success) { populateNodes(null); notify('success', data.Message); }
+                else { notify('warning', data.Message); }
+                $.fancybox.close();
+            }                                    
+        }        
+        function clearInputs(disabled) {
+            $('#txt_id').val('');
+            $('#txt_localae').val('');
+            $('#txt_ip').val('');
+            $('#txt_port').val('');
+            $('#txt_aet').val('');
+            $('#txt_description').val('');
+            $('#txt_notes').val('');
+            $('#txt_path').val('');
+            $('#chk_selected').prop('checked', false);
+            if (disabled) {
+                $('#txt_localae').prop('disabled', true);
+                $('#txt_ip').prop('disabled', true);
+                $('#txt_port').prop('disabled', true);
+                $('#txt_aet').prop('disabled', true);
+                $('#txt_description').prop('disabled', true);
+                $('#txt_notes').prop('disabled', true);
+                $('#chk_selected').prop('disabled', true);
+                $('#txt_path').prop('disabled', true);
+            }
+        }
+        function test(data) {
+            if (isNull(data)) {
+                ajaxHandler('Handlers/TestConnection.ashx', 'get', test);
+            } else {
+                if (!data.Success) { notify('error', data.Message); }
+                else { notify('success', data.Message);}
+            }
+        }
+    </script>
+
+</body>
+</html>
