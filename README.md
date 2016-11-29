@@ -1,8 +1,6 @@
 <h1>Radiopaedia Uploader: </h1><h2>WEB UI</h2>
     <br /><br /><br />
-    <p>
-        Web Plugins:
-    </p>
+    Web Plugins:
     <ul>        
         <li><a href="http://jquery.org">JQuery v1.11.3</a> (included)</li>
         <li><a href="http://getbootstrap.com">Bootstrap v3.3.6</a> (included)</li>
@@ -14,14 +12,10 @@
         <li><a href="http://datatables.net/">DataTables 1.10.11</a> (included)</li>
     </ul>
     <br />
-    <p>
-        ASP.NET (C#) Plugins/Libraries:
-    </p>
+    ASP.NET (C#) Plugins/Libraries:
     <ul>
         <li><a href="https://github.com/ClearCanvas">ClearCanvas DICOM libraries</a> <b>(compile your own)</b></li>
         <li><a href="http://www.toptensoftware.com/petapoco/">PetaPoco v5.1.153</a> (included as NuGet package)</li>
         <li><a href="http://www.newtonsoft.com/json">Newtonsoft.Json v8.0.3</a> (included as NuGet package)</li>
     </ul>
-    <p>
-
-    </p>
+    
