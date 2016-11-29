@@ -1,5 +1,4 @@
-
-    <h1>Radiopaedia Uploader: </h1><h2>WEB UI</h2>
+<h1>Radiopaedia Uploader: </h1><h2>WEB UI</h2>
     <br /><br /><br />
     Web Plugins:
     <ul>        
@@ -21,4 +20,3 @@
     </ul>
     <b>*IMPORTANT* ClearCanvas</b>
     You must download the ClearCanvas source files and compile your own DICOM libraries in order for the app to interact with PACS and read DICOM files.
-
