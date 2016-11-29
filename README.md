@@ -24,9 +24,12 @@ You must download the ClearCanvas source files and compile your own DICOM librar
 Notes:    
 <ul>
     <li>
-        Was written completely in <a href="https://www.visualstudio.com/vs/community/">Visual Studio 2015 Community Edition</a>
+        Was written completely in <a href="https://www.visualstudio.com/vs/community/">Visual Studio 2015 Community Edition</a> (free)
     </li>
     <li>
         All JavaScript coding is written directly on the HTML files and are not in their own source files, this should make it easier to test changes.
+    </li>
+    <li>
+        This app requires the database and the Agent to be running first before this web app can be deployed
     </li>
 </ul>    
