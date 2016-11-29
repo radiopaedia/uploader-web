@@ -1,4 +1,9 @@
 <h1>Radiopaedia Uploader: </h1><h2>WEB UI</h2>
+
+
+<p>
+Created by <a href="mailto:andy.le@mh.org.au">Andy Le of The Royal Melbourne Hospital</a> for <a href="https://www.radiopaedia.org">Radiopaedia.org</a>
+</p>
 Web Plugins:
 <ul>        
     <li><a href="http://jquery.org">JQuery v1.11.3</a> (included)</li>
