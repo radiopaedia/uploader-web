@@ -1,5 +1,4 @@
 <h1>Radiopaedia Uploader: </h1><h2>WEB UI</h2>
-    <br /><br /><br />
     Web Plugins:
     <ul>        
         <li><a href="http://jquery.org">JQuery v1.11.3</a> (included)</li>
