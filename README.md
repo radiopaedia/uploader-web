@@ -37,4 +37,12 @@ Notes:
     <li>
         This app requires the database and the Agent to be running first before this web app can be deployed
     </li>
-</ul>    
+</ul>   
+
+<br>
+<p>
+Further detailed instructions can be found on the manual here:<br>
+<a href="https://github.com/radiopaedia/uploader-agent/blob/master/Radiopaedia%20Uploader%20Manual%2020161129_1521.pdf">
+https://github.com/radiopaedia/uploader-agent/blob/master/Radiopaedia%20Uploader%20Manual%2020161129_1521.pdf
+</a>
+</p>
